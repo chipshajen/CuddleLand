@@ -53,6 +53,24 @@ li.error{
     font-size: 30px;
 }
 
+.mirror {
+    margin-top: 48px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.message {
+    margin-bottom: 16px;
+}
+
+.mirror-username {
+    font-weight: bolder;
+}
+
+.mirror-time {
+    margin-bottom: 6px;
+}
+
 
 
 

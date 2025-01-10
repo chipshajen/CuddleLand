@@ -11,6 +11,8 @@ const pool = require('./db/pool')
 const pgSession = require('connect-pg-simple')(session);
 const { body, validationResult } = require('express-validator')
 const { signupValidators, vipValidators } = require('./utils/formValidation')
+const { grantVip, writeMessage, getMessages, deleteMessage } = require('./db/queries/queries')
+const { isAuth, isVip, isAdmin } = require('./utils/authMiddleware')
 
 const assetsPath = path.join(__dirname, "public")
 app.use(express.static(assetsPath))
@@ -34,13 +36,16 @@ app.use(passport.session());
 
 
 app.use((req, res, next) => {
-    res.locals.currentUser = req.user;
+    res.locals.currentUser = req.user || null;
     next();
 });
 
-app.get('/', (req, res) => {
-    res.render('index')
+app.get('/', async(req, res) => {
+    const messages = await getMessages()
+
+    res.render('index', { messages })
 })
+
 app.get('/sign-up', (req, res) => {
     if (req.isAuthenticated()) {
         return res.redirect('/')
@@ -63,21 +68,56 @@ app.get('/login', (req, res) => {
         res.render('login')
 })
 
-app.get('/vip-form', (req, res) => {
-    if(!req.isAuthenticated){
+app.get('/admin', isAdmin, (req, res) => {
+    res.render('admin')
+})
+
+app.get('/mirror', async(req, res) => {
+    if(!req.isAuthenticated()){
         return res.redirect('/')
     }
 
+    const messages = await getMessages()
+
+    res.render('mirror', { messages })
+})
+
+app.post('/mirror', async(req, res) => {
+    if(!req.isAuthenticated()){
+        return res.redirect('/')
+    }
+
+    const { message } = req.body
+
+    await writeMessage(req.user.id, message)
+
+    res.redirect('/mirror')
+})
+
+app.post('/mirror/:messageId/delete', isAdmin, async(req, res) => {
+
+    await deleteMessage(req.params.messageId)
+
+    res.redirect('/mirror')
+})
+
+app.get('/vip-form', (req, res) => {
+    if(!req.isAuthenticated()){
+        return res.redirect('/')
+    }
     res.render('vip-access')
 })
 
-app.post('/vip-form', vipValidators, (req, res) => {
+app.post('/vip-form', vipValidators, async(req, res) => {
     const errors = validationResult(req)
     if(!errors.isEmpty()) {
         return res.status(400).render('vip-access', {
             errors: errors.array()
         })
     }
+
+    await grantVip(req.user.id)
+    res.redirect('/vip-form')
 })
 
 app.post("/sign-up", signupValidators, async (req, res, next) => {

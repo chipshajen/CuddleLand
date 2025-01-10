@@ -1,24 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="/styles.css">
 </head>
+
 <body>
     <div class="content">
         <%- include('partials/header') %>
-        <% if (locals.currentUser) { %>
-            <p>Welcome <%= currentUser.username %>, head over to the <a href="/vip-form">VIP area!</a></p>
-        <%} else { %>
-            <p>Welcome stranger, please <a href="/login">login!</a></p>
-        <%}%>
-        <% if(locals.currentUser){ %>
-            <p style="margin-top: 24px;"><a href="/mirror">Write a message on the bathroom mirror</a></p>
-        <%}%>
-        
-        
+
+
+        <form action="/mirror" method="POST">
+            <label for="message">Write a message on the bathroom mirror for everyone to see</label>
+            <br>
+            <textarea rows="5" cols="30" name="message" id="message"></textarea>
+            <br>
+            <button type="submit">Write It</button>
+        </form>
+
+        <a href="/" style="margin-top: 24px;">Go back to the bar</a>
+
         <div class="mirror">
             <% if(locals.messages) { %>
                 <%messages.forEach(message => { %>
@@ -38,8 +42,8 @@
                 <%})%>
             <%}%><%  %>
         </div>
-        
     </div>
-    
+
 </body>
+
 </html>

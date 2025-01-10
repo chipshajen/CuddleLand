@@ -11,7 +11,10 @@
 <body>
     <div class="content">
         <%- include('partials/header') %>
-        <h2>Get VIP status in CuddleLand!</h2>
+
+
+        <% if(currentUser.membership === 'pleb') {%>
+            <h2>Get VIP status in CuddleLand!</h2>
         <form action="/vip-form" method="POST" class="vip-form">
             <label for="vip">Enter Secret Code</label>
             <input type="password" name="vip" id="vip">
@@ -24,6 +27,11 @@
             <% }) %>  
             </ul>
         <%}%>
+        <%} else {%>
+            <h2>PARTY YEEEAH</h2>
+        <%}%>
+
+        <a href="/" style="margin-top: 24px;">Go back to the bar</a>
     </div>
 
 </body>
