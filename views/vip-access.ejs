@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body>
+    <div class="content">
+        <%- include('partials/header') %>
+        <h2>Get VIP status in CuddleLand!</h2>
+        <form action="/vip-form" method="POST" class="vip-form">
+            <label for="vip">Enter Secret Code</label>
+            <input type="password" name="vip" id="vip">
+            <button type="submit">Get Access</button>
+        </form>
+        <% if(locals.errors) {%>
+            <ul>
+            <% errors.forEach((error) => { %>
+                <li class="error"><%= error.msg %></li>
+            <% }) %>  
+            </ul>
+        <%}%>
+    </div>
+
+</body>
+
+</html>

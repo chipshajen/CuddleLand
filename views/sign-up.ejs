@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body>
+    <div class="content">
+        <%- include('partials/header') %>
+            <form action="/sign-up" method="POST" class="login-form">
+                <div class="username">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" id="username" value="<%= username || '' %>">
+                </div>
+                <div class="first">
+                    <label for="first">First Name</label>
+                    <input type="text" name="first" id="first" value="<%= first  || ''%>">
+                </div>
+                <div class="last">
+                    <label for="last">Last Name</label>
+                    <input type="text" name="last" id="last" value="<%= last || '' %>">
+                </div>
+                <div class="password">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password">
+                </div>
+                <div class="confirm">
+                    <label for="confirm">Confirm Password</label>
+                    <input type="password" name="confirm" id="confirm">
+                </div>
+                <button type="submit">Sign Up!</button>
+            </form>
+            <% if(locals.error){ %>
+                <p><%= error %></p>
+            <%}%> 
+
+            <% if (locals.errors) {%>
+                <ul>
+                  <% errors.forEach(function(error) { %>
+                    <li class="error"><%= error.msg %></li>
+                  <% }); %>
+                </ul>
+              <% } %>
+    </div>
+
+</body>
+
+</html>
