@@ -16,7 +16,7 @@ async function grantVip(id){
 
 async function writeMessage(id, message){
     const query = `
-        INSERT INTO messages(userId, message)
+        INSERT INTO messages("userId", message)
         VALUES($1, $2)
     `
 
@@ -32,7 +32,7 @@ async function getMessages(){
             m.createdAt,
             u.username
         FROM messages m
-        JOIN users u ON u.id = m.userId
+        JOIN users u ON u.id = m."userId"
         ORDER BY createdAt DESC
     `
 
