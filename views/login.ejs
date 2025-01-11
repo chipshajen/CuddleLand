@@ -22,6 +22,9 @@
                 </div>
                 <button type="submit">LOGIN</button>
             </form>
+            <% if(locals.errorMessage) { %>
+                 <p><%= errorMessage %></p>
+            <%}%>
     </div>
 
 </body>

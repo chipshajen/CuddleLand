@@ -40,6 +40,12 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use((req, res, next) => {
+    res.locals.errorMessage = req.session.errorMessage || null;
+    req.session.errorMessage = null;
+    next();
+});
+
 app.get('/', async(req, res) => {
     const messages = await getMessages()
 
@@ -163,13 +169,23 @@ app.post("/sign-up", signupValidators, async (req, res, next) => {
 
 });
 
-app.post(
-    "/login",
-    passport.authenticate("local", {
-        successRedirect: "/",
-        failureRedirect: "/"
-    })
-);
+app.post("/login", (req, res, next) => {
+    passport.authenticate("local", (err, user, info) => {
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            req.session.errorMessage = info.message;
+            return res.redirect("/login");
+        }
+        req.logIn(user, (err) => {
+            if (err) {
+                return next(err);
+            }
+            return res.redirect("/");
+        });
+    })(req, res, next);
+});
 
 app.get("/logout", (req, res, next) => {
     req.logout((err) => {
@@ -191,7 +207,6 @@ passport.use(
             }
             const match = await bcrypt.compare(password, user.password);
             if (!match) {
-                // passwords do not match!
                 return done(null, false, { message: "Incorrect password" })
             }
             return done(null, user);
