@@ -18,6 +18,9 @@
             <p style="margin-top: 24px;"><a href="/mirror">Write a message on the bathroom mirror</a></p>
         <%}%>
         
+        <% if(locals.successMessage) { %>
+            <p style="margin-top:12px"><%= successMessage %></p>
+        <%}%>
         
         <div class="mirror">
             <% if(locals.messages) { %>

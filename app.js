@@ -48,7 +48,12 @@ app.use((req, res, next) => {
 app.get('/', async(req, res) => {
     const messages = await getMessages()
 
-    res.render('index', { messages })
+    const success = req.session.successMessage || null;
+    req.session.successMessage = null; // Clear the message
+
+    console.log(success)
+
+    res.render('index', { messages, successMessage: success })
 })
 
 app.get('/sign-up', (req, res) => {
@@ -147,6 +152,7 @@ app.post("/sign-up", signupValidators, async (req, res, next) => {
                     req.body.username,
                     hashedPassword,
                 ]);
+                req.session.successMessage = "You have successfully signed up!";
                 res.redirect("/");
             } catch (err) {
                 if (err.code === '23505') {

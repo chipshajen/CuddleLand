@@ -10,14 +10,14 @@ body {
     width: 100%;
     display: flex;
     justify-content:center;
-    background-color: lightcyan;
+    background-color: darkgrey;
 }
 
 .content {
     display: flex;
     flex-direction: column;
     width: 40%;
-    background-color: lightcoral;
+    background-color: pink;
     padding: 0 50px;
 }
 
