@@ -12,7 +12,7 @@
         <% if (locals.currentUser) { %>
             <p>Welcome <%= currentUser.username %>, head over to the <a href="/vip-form">VIP area!</a></p>
         <%} else { %>
-            <p>Welcome stranger, please <a href="/login">login!</a></p>
+            <p>Welcome stranger, please <a href="/login">login</a> or <a href="/sign-up">sign up!</a></p>
         <%}%>
         <% if(locals.currentUser){ %>
             <p style="margin-top: 24px;"><a href="/mirror">Write a message on the bathroom mirror</a></p>
